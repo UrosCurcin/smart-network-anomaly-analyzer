@@ -1,0 +1,39 @@
+# Smart Network Anomaly Analyzer - default configuration.
+#
+# Use with:   sn-analyzer --config configs/default.yaml --pcap example.pcap
+#             (a bare filename like that is looked up under capture.pcap_dir below;
+#             a full or relative path with a directory in it is used as given)
+# Priority (lowest to highest): built-in defaults < this file
+#   < environment variables (SN_<SECTION>__<FIELD>, e.g. SN_ANALYSIS__THRESHOLD=0.9)
+#   < command-line flags.
+# Unknown keys are rejected. Relative paths are relative to the working directory.
+
+capture:
+  interface: null          # network interface for live capture, e.g. "Wi-Fi"
+  bpf_filter: null         # optional BPF filter, e.g. "tcp port 443"
+  promiscuous: false       # only enable where you are authorized to do so
+  pcap_dir: logs           # a bare "--pcap example.pcap" is looked up here;
+                           # a path with a directory in it is used as given
+
+analysis:
+  threshold: 0.80          # anomaly score (0-1) at or above which an alert is raised
+  window_packets: 50       # a flow window closes after this many packets...
+  window_seconds: 30.0     # ...or this many seconds
+  bootstrap_windows: 100   # windows used to learn a baseline when no model is loaded
+  stream_idle_seconds: 300.0     # drop flows that stay silent this long
+  alert_cooldown_seconds: 300.0  # suppress repeat alerts for the same flow
+  max_active_flows: 10000  # most flows tracked at once (bounds memory)
+  tick_seconds: 1.0        # live-capture housekeeping interval
+
+model:
+  path: null               # load a trusted saved model instead of training a baseline
+  save_path: null          # save the model once baseline training completes (ignored if path is set)
+  model_dir: models        # a bare filename for path/save_path is resolved here;
+                           # a path with a directory in it is used as given
+
+storage:
+  database_path: data/alerts.db   # SQLite alert history; null disables it
+  evidence_dir: artifacts/evidence
+
+logging:
+  level: INFO              # DEBUG, INFO, WARNING or ERROR
