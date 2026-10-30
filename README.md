@@ -10,7 +10,7 @@ backend exposes this as a REST API, and a React/TypeScript dashboard
 
 See `Smart network anomaly analyzer documentation.pdf` (or the shared
 walkthrough doc) for a full plain-language explanation of how every piece
-works -- this README only covers getting it running.
+works - this README only covers getting it running.
 
 ## Prerequisites
 
@@ -46,10 +46,10 @@ sn-analyzer --config configs/default.yaml --pcap logs\mixed_traffic_test.pcap
 Or run the full API + dashboard together, in two terminals:
 
 ```powershell
-# Terminal 1 -- backend API (http://127.0.0.1:8000, docs at /docs)
+# Terminal 1 - backend API (http://127.0.0.1:8000, docs at /docs)
 sn-analyzer-api --config configs\default.yaml
 
-# Terminal 2 -- dashboard (http://localhost:5173)
+# Terminal 2 - dashboard (http://localhost:5173)
 cd frontend
 npm install
 npm run dev
@@ -78,7 +78,7 @@ loader, and the FastAPI app's endpoints.
 what's worth tuning:
 
 | Setting | Default | What it controls |
-|---|---|---|
+|--|--|--|
 | `analysis.threshold` | 0.80 | Anomaly score (0-1) at/above which an alert fires |
 | `analysis.window_packets` / `window_seconds` | 50 / 30.0 | A flow window closes on whichever limit hits first |
 | `analysis.bootstrap_windows` | 100 | How many early windows train the baseline before scoring starts |
@@ -88,7 +88,7 @@ what's worth tuning:
 
 Settings layer as: built-in defaults -> `configs/default.yaml` -> environment
 variables (`SN_<SECTION>__<FIELD>`, e.g. `SN_ANALYSIS__THRESHOLD=0.9`) ->
-explicit CLI flags/API request fields. Run `sn-analyzer --help` for the full
+explicit CLI flags/API request fields. Run `sn-analyzer -help` for the full
 flag list.
 
 ## Project layout
@@ -120,8 +120,8 @@ Worth knowing (and saying out loud, rather than discovering the hard way):
 - **Only one model is registered** (Isolation Forest), even though the
   inference engine is built to support a weighted ensemble of several.
 - **No packaging/deployment story** (no Dockerfile, no process manager
-  config) -- it's run directly with `sn-analyzer-api` today.
+  config) - it's run directly with `sn-analyzer-api` today.
 - **The baseline/bootstrap phase must see representative "normal" traffic.**
   If it's dominated by one flow type, the model won't recognize other
-  ordinary traffic as normal either (see the config table above --
+  ordinary traffic as normal either (see the config table above -
   `bootstrap_windows` and how it's filled matters a lot).
